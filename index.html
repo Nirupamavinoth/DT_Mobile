@@ -97,14 +97,27 @@
 				<label for="username">Username : </label>
 				
 				<input type="text" id="username" value="<%= username %>" class="mandatory" placeholder="Enter Username" />
-				<span id="usernameError" class="error"></span>
+				
 			</div>
-
+			<table>
+				<tr>
+					<td width="47%"></td>
+					<td><span id="usernameError" class="error"></span></td>
+				</tr>
+			</table>
+			
 			<div class=" pull-left">
 				<label for="username">Password : </label>
 				<input type="password" id="password" class="mandatory"  placeholder="Enter Password"/>
-				<span id="passwordError" class="error"></span>
+				
 			</div>
+			
+			<table>
+				<tr>
+					<td width="47%"></td>
+					<td><span id="passwordError" class="error"></span></td>
+				</tr>
+			</table>
 
 			<div class="width1by1 pull-left">			
 				<input type="checkbox" id="rememberMe" checked />

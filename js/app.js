@@ -2,11 +2,17 @@
 	
 	//set default values in Model //
 		var LoginFormModel = Backbone.Model.extend({
-		defaults : {
+		
+		url: function(){
+      			return "https://mobile.telekom.intercloud.net/Orchestration/user/rac" +this.get("id");
+		},
+			defaults : {
 			username : '',
 			pass	 : '',
 			rememberMe : true
+			
 		},
+		
 		// Its called when an instance of the model is created
 		initialize : function(){
 			console.log(this);
@@ -54,11 +60,12 @@
 		
 	});
 
+	
 	var LoginFormView = Backbone.View.extend({
 		el : "#frmLogin",
 		tmpl : $('#tmplFrmLogin').html(),
 		events : {
-			"submit" : "handleLoginSubmit"
+			"submit" : "login"
 		},
 		initialize : function(){
 			// render the login form whne the instance is created
@@ -73,7 +80,7 @@
 			this.$el.append(form);
 		},
 		
-		handleLoginSubmit : function(e){
+		login : function(e){
 			// prevent form submission
 			e.preventDefault();
 			
@@ -84,9 +91,17 @@
 		    else {
 		      this.$('.alert-error').fadeIn();
 		    }
+		    
+		    
 		}
 	});
+	
+	var collection = new Backbone.Collection.extend({
+        model: LoginFormModel,
+        url: 'https://mobile.telekom.intercloud.net/Orchestration/user/rac'
+	});
 
+	
 	var loginView = new LoginFormView({
 		model : new LoginFormModel()
 	});

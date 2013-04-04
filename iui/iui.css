@@ -248,7 +248,7 @@ input:not([type|=submit]):not([type|=radio]):not([type|=checkbox]) {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    width: 12%;
+    width: 53%;
     margin: 8px 0 0 0;
     font-size: 14px;
     font-weight: normal;
