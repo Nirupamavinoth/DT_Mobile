@@ -20,6 +20,7 @@
 		width: 100px;
 	}
 	input[type="submit"] {
+		width:280px!important;
 		height: 40px;
 	}
 	.template {
@@ -34,10 +35,14 @@
 	}
 	label{
 	text-overflow:ellipsis;
-	width:167px;
+	font-size:15px;
+	width:119px;
 	white-space:nowrap;
 	overflow:hidden;
 	display:inline-block;
+	}
+	.inline{
+		font-size:12px;
 	}
 	
 	</style>
@@ -91,13 +96,13 @@
 			<div class=" pull-left">
 				<label for="username">Username : </label>
 				
-				<input type="text" id="username" value="<%= username %>" class="mandatory" />
+				<input type="text" id="username" value="<%= username %>" class="mandatory" placeholder="Enter Username" />
 				<span id="usernameError" class="error"></span>
 			</div>
 
 			<div class=" pull-left">
 				<label for="username">Password : </label>
-				<input type="password" id="password" class="mandatory" />
+				<input type="password" id="password" class="mandatory"  placeholder="Enter Password"/>
 				<span id="passwordError" class="error"></span>
 			</div>
 
@@ -106,7 +111,7 @@
 				<label for="rememberMe" class="inline">Remember Me</label>
 			</div>
 
-			<button class="pull-right btn primary" type="submit" id="btnLogin">&nbsp;Log Me In</button>
+			<input	type="submit" id="btnLogin" value="Login">
 			
 		</script>
 		

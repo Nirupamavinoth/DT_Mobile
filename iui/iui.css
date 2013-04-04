@@ -248,7 +248,7 @@ input:not([type|=submit]):not([type|=radio]):not([type|=checkbox]) {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    width: 100%;
+    width: 12%;
     margin: 8px 0 0 0;
     font-size: 14px;
     font-weight: normal;
@@ -413,9 +413,14 @@ fieldset > .row:last-child {
 
 #usernameError{
 	font-weight:bold;
+	font-size:11px;
 	color:#ff3000;
 }
-
+#passwordError{
+	font-weight:bold;
+	font-size:11px;
+	color:#ff3000;
+}
 .alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#468847;}
 
 .alert-error{background-color:#f2dede;border-color:#eed3d7;color:#b94a48;}

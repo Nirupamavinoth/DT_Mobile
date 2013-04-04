@@ -19,6 +19,7 @@
 			this.setCredentials();
 			this.validateForm();
 		},
+		
 		setCredentials : function(){
 			this.set({
 				username 	: $("#username").val(),
@@ -27,12 +28,11 @@
 			});
 
 		},
-		
 		// validate the form
 		validateForm : function(){
 			
 			if(!this.get("username")){
-				$("#usernameError").text("Enter username");
+				$("#usernameError").text("Please enter username");
 			}
 			else{
 				$("#usernameError").text("");
