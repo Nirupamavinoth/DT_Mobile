@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8" />
+	<title>ClearPath Networks Mobile Security</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<link rel="icon" type="image/png" href="iui/iui-favicon.png">
+	<link rel="apple-touch-icon" href="iui/iui-logo-touch-icon.png" />
+	<link rel="stylesheet" href="iui/iui.css" type="text/css" />
+	<link rel="stylesheet" title="Default" href="iui/t/default/default-theme.css" type="text/css" />
+	<link rel="stylesheet" href="css/iui-panel-list.css" type="text/css" />
+
+	<style type="text/css">
+	.panel p.normalText {
+		text-align: left;
+		padding: 0 10px 0 10px;
+	}
+	
+	input[type="text"] {
+		width: 100px;
+	}
+	input[type="submit"] {
+		height: 40px;
+	}
+	.template {
+		display: none;
+	}
+	.leftSide{
+		float:left;
+	}
+	.rightSide{
+		float:right;
+		padding-right:45px;
+	}
+	label{
+	text-overflow:ellipsis;
+	width:167px;
+	white-space:nowrap;
+	overflow:hidden;
+	display:inline-block;
+	}
+	
+	</style>
+	
+	</head>
+	<body>
+		<div class="toolbar">
+		<h1 id="pageTitle">Mobile Security</h1>
+		<a id="backButton" class="button" href="#"></a>
+	</div>
+	<div id="home" class="panel" selected="true">
+
+		<fieldset>
+			<p class="normalText">
+				<b>ClearPath Networks Mobile Security</b>
+			</p>
+		</fieldset>
+		<h2>Login</h2>
+		
+		<div id="container" class="auto">
+			<form action="#" id="frmLogin" class="auto" >
+				<span id="loginFormError" class="error"></span>
+			</form>
+		</div>
+		
+		<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+	</div>
+		<div id="antivirus" class="panel">
+		<div id="antivirusContentHolder" class="panel"></div>
+	</div>
+
+	<div id="contentFiltering" class="panel">
+		<div id="contentFilteringContentHolder" class="panel"></div>
+	</div>
+		<script type="text/template" id="tmplFrmLogin">
+			<div class=" pull-left">
+				<label for="username">Username : </label>
+				
+				<input type="text" id="username" value="<%= username %>" class="mandatory" />
+				<span id="usernameError" class="error"></span>
+			</div>
+
+			<div class=" pull-left">
+				<label for="username">Password : </label>
+				<input type="password" id="password" class="mandatory" />
+				<span id="passwordError" class="error"></span>
+			</div>
+
+			<div class="width1by1 pull-left">			
+				<input type="checkbox" id="rememberMe" checked />
+				<label for="rememberMe" class="inline">Remember Me</label>
+			</div>
+
+			<button class="pull-right btn primary" type="submit" id="btnLogin">&nbsp;Log Me In</button>
+			
+		</script>
+		
+		<script type="text/template" id="resourceTemplate">
+			<fieldset>
+			<% _.each(resources, function(r){ %>
+			<div class="row">
+			<a href="/Orchestration<%= r.mobileConfigURL %>" target="_blank">Download Mobile VPN Profile</a>
+			</div>
+			<% }); %>
+			</fieldset>
+			<fieldset>
+			<div class="row"><a href="#antivirus"><span class="leftSide">Antivirus</span><span class="rightSide" id="antivirusStatus">On</span></a></div>
+			<div class="row"><a href="#contentFiltering"><span class="leftSide">Content Filtering</span><span class="rightSide" id="contentFilteringStatus">On</span></a></div>
+			</fieldset>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			<div>&nbsp;</div>
+			</script>
+
+	<script type="text/template" id="antivirusTemplate">
+			<fieldset>
+			<div class="row">
+			<label>Antivirus</label>
+			<div class="toggle" id="antivirusToggle" toggled="<%= kasperskyEnabled ? "true" : "false" %>"><span class="thumb"></span><span class="toggleOn">ON</span><span class="toggleOff">OFF</span></div>
+			</div>
+			</fieldset>
+						<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+		</script>
+
+	<script type="text/template" id="contentFilteringTemplate">
+			<fieldset>
+			<div class="row">
+			<label>Content Filtering</label>
+			<div class="toggle" id="contentFilteringToggle" toggled="<%= policy[0].enable ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			</fieldset>
+			<fieldset id="contentFilteringCategories">
+			<div class="row">
+			<label>adult content</label>
+			<div class="toggle" id="category-1" categoryNumber="1" toggled="<%= _.contains(policy[0].blockedList, 1) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>criminal skills</label>
+			<div class="toggle" id="category-2" categoryNumber="2" toggled="<%= _.contains(policy[0].blockedList, 2) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>drugs, alcohol, tobacco</label>
+			<div class="toggle" id="category-3" categoryNumber="3" toggled="<%= _.contains(policy[0].blockedList, 3) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>gambling</label>
+			<div class="toggle" id="category-4" categoryNumber="4" toggled="<%= _.contains(policy[0].blockedList, 4) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>hacking</label>
+			<div class="toggle" id="category-5" categoryNumber="5" toggled="<%= _.contains(policy[0].blockedList, 5) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>hate speech</label>
+			<div class="toggle" id="category-6" categoryNumber="6" toggled="<%= _.contains(policy[0].blockedList, 6) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>violence</label>
+			<div class="toggle" id="category-7" categoryNumber="7" toggled="<%= _.contains(policy[0].blockedList, 7) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>weapons</label>
+			<div class="toggle" id="category-8" categoryNumber="8" toggled="<%= _.contains(policy[0].blockedList, 8) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>advertisements</label>
+			<div class="toggle" id="category-9" categoryNumber="9" toggled="<%= _.contains(policy[0].blockedList, 9) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>arts &amp; entertainment</label>
+			<div class="toggle" id="category-10" categoryNumber="10" toggled="<%= _.contains(policy[0].blockedList, 10) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>chat</label>
+			<div class="toggle" id="category-11" categoryNumber="11" toggled="<%= _.contains(policy[0].blockedList, 11) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>computing &amp; internet</label>
+			<div class="toggle" id="category-12" categoryNumber="12" toggled="<%= _.contains(policy[0].blockedList, 12) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>personals &amp; dating</label>
+			<div class="toggle" id="category-13" categoryNumber="13" toggled="<%= _.contains(policy[0].blockedList, 13) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>education</label>
+			<div class="toggle" id="category-14" categoryNumber="14" toggled="<%= _.contains(policy[0].blockedList, 14) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>finance &amp; investment</label>
+			<div class="toggle" id="category-15" categoryNumber="15" toggled="<%= _.contains(policy[0].blockedList, 15) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>food &amp; drink</label>
+			<div class="toggle" id="category-16" categoryNumber="16" toggled="<%= _.contains(policy[0].blockedList, 16) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>games</label>
+			<div class="toggle" id="category-17" categoryNumber="17" toggled="<%= _.contains(policy[0].blockedList, 17) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>glamour &amp; intimate apparel</label>
+			<div class="toggle" id="category-18" categoryNumber="18" toggled="<%= _.contains(policy[0].blockedList, 18) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>gov &amp; politics</label>
+			<div class="toggle" id="category-19" categoryNumber="19" toggled="<%= _.contains(policy[0].blockedList, 19) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>health &amp; medicine</label>
+			<div class="toggle" id="category-20" categoryNumber="20" toggled="<%= _.contains(policy[0].blockedList, 20) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>hobbies &amp; recreation</label>
+			<div class="toggle" id="category-21" categoryNumber="21" toggled="<%= _.contains(policy[0].blockedList, 21) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>hosting sites</label>
+			<div class="toggle" id="category-22" categoryNumber="22" toggled="<%= _.contains(policy[0].blockedList, 22) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>job search &amp; career development</label>
+			<div class="toggle" id="category-23" categoryNumber="23" toggled="<%= _.contains(policy[0].blockedList, 23) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>kid's sites</label>
+			<div class="toggle" id="category-24" categoryNumber="24" toggled="<%= _.contains(policy[0].blockedList, 24) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>lifestyle &amp; culture</label>
+			<div class="toggle" id="category-25" categoryNumber="25" toggled="<%= _.contains(policy[0].blockedList, 25) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>news</label>
+			<div class="toggle" id="category-26" categoryNumber="26" toggled="<%= _.contains(policy[0].blockedList, 26) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>photo searches</label>
+			<div class="toggle" id="category-27" categoryNumber="27" toggled="<%= _.contains(policy[0].blockedList, 27) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>real estate</label>
+			<div class="toggle" id="category-28" categoryNumber="28" toggled="<%= _.contains(policy[0].blockedList, 28) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>reference</label>
+			<div class="toggle" id="category-29" categoryNumber="29" toggled="<%= _.contains(policy[0].blockedList, 29) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>remote proxies</label>
+			<div class="toggle" id="category-30" categoryNumber="30" toggled="<%= _.contains(policy[0].blockedList, 30) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>religion</label>
+			<div class="toggle" id="category-31" categoryNumber="31" toggled="<%= _.contains(policy[0].blockedList, 31) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>search engines</label>
+			<div class="toggle" id="category-32" categoryNumber="32" toggled="<%= _.contains(policy[0].blockedList, 32) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>sex education</label>
+			<div class="toggle" id="category-33" categoryNumber="33" toggled="<%= _.contains(policy[0].blockedList, 33) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>shopping</label>
+			<div class="toggle" id="category-34" categoryNumber="34" toggled="<%= _.contains(policy[0].blockedList, 34) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>sports</label>
+			<div class="toggle" id="category-35" categoryNumber="35" toggled="<%= _.contains(policy[0].blockedList, 35) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>streaming media</label>
+			<div class="toggle" id="category-36" categoryNumber="36" toggled="<%= _.contains(policy[0].blockedList, 36) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>travel</label>
+			<div class="toggle" id="category-37" categoryNumber="37" toggled="<%= _.contains(policy[0].blockedList, 37) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>usenet news</label>
+			<div class="toggle" id="category-38" categoryNumber="38" toggled="<%= _.contains(policy[0].blockedList, 38) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>motor vehicles</label>
+			<div class="toggle" id="category-39" categoryNumber="39" toggled="<%= _.contains(policy[0].blockedList, 39) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>
+			<div class="row">
+			<label>web-based email</label>
+			<div class="toggle" id="category-40" categoryNumber="40" toggled="<%= _.contains(policy[0].blockedList, 40) ? "true" : "false" %>">
+			<span class="thumb"></span>
+			<span class="toggleOn">ON</span>
+			<span class="toggleOff">OFF</span>
+			</div>
+			</div>			
+			</fieldset>
+
+		</script>
+
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/backbone.js"></script>
+		<script src="js/backbone-validation.js"></script>
+		<script src="js/iui.js"></script>
+		<script src="js/app.js"></script>
+		
+	</body>
+</html>
