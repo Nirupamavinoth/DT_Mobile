@@ -3,15 +3,16 @@
 	//set default values in Model //
 		var LoginFormModel = Backbone.Model.extend({
 		
-		url: function(){
-      			return "https://mobile.telekom.intercloud.net/Orchestration/user/rac" +this.get("id");
-		},
+		url :function()
+		{return "https://admin.telekom.intercloud.net/Orchestration/user/rac"},
+		
 			defaults : {
 			username : '',
 			pass	 : '',
 			rememberMe : true
 			
 		},
+		
 		
 		// Its called when an instance of the model is created
 		initialize : function(){
@@ -60,12 +61,16 @@
 		
 	});
 
+	var LoginForm = new Backbone.Collection.extend({
+        model: LoginFormModel
+        
+	});
 	
 	var LoginFormView = Backbone.View.extend({
 		el : "#frmLogin",
 		tmpl : $('#tmplFrmLogin').html(),
 		events : {
-			"submit" : "login"
+			"submit" : "handleLoginSubmit"
 		},
 		initialize : function(){
 			// render the login form whne the instance is created
@@ -73,16 +78,19 @@
 		},
 		
 		render : function(){
-			
+					
 			var form = _.template(this.tmpl,{ username : this.model.attributes.username });
 
 			// $el is created by Backbone for us.. from the string selector given into el
 			this.$el.append(form);
 		},
 		
-		login : function(e){
+		handleLoginSubmit : function(e){
 			// prevent form submission
 			e.preventDefault();
+			var data = Backbone.Syphon.serialize(this);
+			console.log(data);
+			this.model.save();
 			
 			if(this.model.enterLogin(true)){
 				
@@ -96,14 +104,41 @@
 		}
 	});
 	
-	var collection = new Backbone.Collection.extend({
-        model: LoginFormModel,
-        url: 'https://mobile.telekom.intercloud.net/Orchestration/user/rac'
+	var mobRouter = Backbone.Router.extend({
+		
+		routes: {
+           
+ 	    	"btnLogin":"loginbut"
+ 	    
+        },
+        
+        loginbut: function(){
+			fnLoginDisplay("#contentFilteringTemplate");
+        	//viewDeviceName = this.model.get('name')
+        	
+        	$("#contentFilteringTemplate").html()
+			this.log_router=new LoginFormModel();
+			this.log_router.fetch({
+				success:function(model, response){
+					login.collection = new LoginForm(response);
+					login.render();	
+				},
+				error:function(data){
+					alert("")
+				}
+			});
+	}
+	
 	});
-
 	
 	var loginView = new LoginFormView({
 		model : new LoginFormModel()
 	});
 	
+	var loginroute = new mobRouter();
+	login = new LoginFormView();
+	Backbone.history.start();
+	
 })(jQuery);
+
+
