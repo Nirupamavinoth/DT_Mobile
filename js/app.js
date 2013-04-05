@@ -113,9 +113,8 @@
         },
         
         loginbut: function(){
-			fnLoginDisplay("#contentFilteringTemplate");
-        	//viewDeviceName = this.model.get('name')
         	
+			fnLoginDisplay("#contentFilteringTemplate");
         	$("#contentFilteringTemplate").html()
 			this.log_router=new LoginFormModel();
 			this.log_router.fetch({
