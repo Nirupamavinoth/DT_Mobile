@@ -3,20 +3,23 @@
 	//set default values in Model //
 		var LoginFormModel = Backbone.Model.extend({
 		
-		url :function()
-		{return "https://admin.telekom.intercloud.net/Orchestration/user/rac"},
+		url :function(){
+			
+			return "data.json"
+			
+		},
 		
 			defaults : {
 			username : '',
-			pass	 : '',
-			rememberMe : true
+			password : '',
+			rememberMe : ''
 			
 		},
 		
 		
 		// Its called when an instance of the model is created
 		initialize : function(){
-			console.log(this);
+			console.log();
 		},
 		
 		// for credentials set and validations
@@ -61,11 +64,26 @@
 		
 	});
 
-	var LoginForm = new Backbone.Collection.extend({
-        model: LoginFormModel
+	var LoginFormCollection = new Backbone.Collection.extend({
+        model : LoginFormModel,
+        url: ' data.json',
+       	url:function()
+			{
+				return this.urlRoot;
+			}
         
 	});
 	
+	var LoginForm = Backbone.View.extend({
+		
+		currentTemplate: "tmplFrmLogin",
+			initialize:function(){
+					this.render();
+				},
+			
+	
+	});	
+		
 	var LoginFormView = Backbone.View.extend({
 		el : "#frmLogin",
 		tmpl : $('#tmplFrmLogin').html(),
@@ -80,8 +98,6 @@
 		render : function(){
 					
 			var form = _.template(this.tmpl,{ username : this.model.attributes.username });
-
-			// $el is created by Backbone for us.. from the string selector given into el
 			this.$el.append(form);
 		},
 		
@@ -113,19 +129,19 @@
         },
         
         loginbut: function(){
-        	
-			fnLoginDisplay("#contentFilteringTemplate");
+			("#contentFilteringTemplate").show();
+      /*  	      	
         	$("#contentFilteringTemplate").html()
 			this.log_router=new LoginFormModel();
 			this.log_router.fetch({
 				success:function(model, response){
-					login.collection = new LoginForm(response);
+					login.collection = new LoginFormCollection(response);
 					login.render();	
 				},
 				error:function(data){
 					alert("")
 				}
-			});
+			});*/
 	}
 	
 	});
