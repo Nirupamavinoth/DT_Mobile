@@ -8,3 +8,10 @@
 .panel > ul > li:last-child a { -webkit-border-bottom-right-radius:10px; -webkit-border-bottom-left-radius:10px; border-bottom-width:1px !important; }
 .panel > ul > li a img { vertical-align:middle; margin-left:-4px; }
 
+.error_input {
+	
+    border: #B94A48 2px solid;
+    color: #B94A48;
+    font-weight:bold;
+}
+

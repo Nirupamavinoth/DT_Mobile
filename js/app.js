@@ -42,17 +42,21 @@
 		validateForm : function(){
 			
 			if(!this.get("username")){
-				$("#usernameError").text("Please enter username");
+				//$("#usernameError").text("Please enter username");
+				$("#username").addClass("error_input")
 			}
 			else{
-				$("#usernameError").text("");
+				//$("#usernameError").text("");
+				$("#username").removeClass("error_input")
 			}
 
 			if(!this.get("password")){
-				$("#passwordError").text("Please enter password");	
+				//("#passwordError").text("Please enter password");
+				$("#password").addClass("error_input")	
 			}
 			else{
-				$("#passwordError").text("");
+				//$("#passwordError").text("");
+				$("#password").removeClass("error_input")	
 			}
 
 			this.getLoginDetails();
